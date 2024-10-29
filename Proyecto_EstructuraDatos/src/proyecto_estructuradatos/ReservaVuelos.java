@@ -11,6 +11,7 @@ public class ReservaVuelos {
     private NodoP arriba;
     private int maximo;
     private int tamannio;
+    
 
     public ReservaVuelos() {
         this.arriba = null;
@@ -93,7 +94,8 @@ public class ReservaVuelos {
                 "1. Consultar Vuelos Disponibles\n"
                 + "2. Reservar Vuelo\n"
                 + "3. Mostrar Últimos Vuelos Consultados\n"
-                + "4. Salir\n"
+                + "4. Mostrar Reservas Ya Creadas \n"
+                + "5. Salir\n"
                 + "Seleccione una opción\n"
             );
 
@@ -109,10 +111,35 @@ public class ReservaVuelos {
                     mostrarUltimoVuelo();
                     break;
                 case "4":
-                    JOptionPane.showMessageDialog(null, "Saliendo del sistema ");
+                    Cola cola = new Cola();
+        
+                    DatoC datoVuelo = new DatoC();
+                    datoVuelo.setOrigen("Nueva York");
+                    datoVuelo.setDestino("Toronto");
+                    datoVuelo.setNumeroVuelo("12-E");
+                    datoVuelo.setPrecio(200);
+      
+    
+                    cola.encolar(datoVuelo);
+
+    
+                    cola.imprimirCola();
+                        break;
+                        
+                case "5":
+                    int confirm = JOptionPane.showConfirmDialog(null, 
+                        "¿Está seguro que desea salir?\nPerderá sus reservas no confirmadas.", 
+                        "Confirmar Salida", 
+                        JOptionPane.YES_NO_OPTION);
+                    if (confirm == JOptionPane.YES_OPTION) {
+                        JOptionPane.showMessageDialog(null, "Saliendo del sistema.");
+                        System.exit(0); 
+                    } else {
+                        JOptionPane.showMessageDialog(null, " ");
+                    }
                     break;
                 default:
-                    JOptionPane.showMessageDialog(null, "Opción no válida. Intente de nuevo ");
+                    JOptionPane.showMessageDialog(null, "Opción no válida. Intente de nuevo.");
             }
         }
     }
