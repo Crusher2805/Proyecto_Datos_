@@ -7,22 +7,20 @@ package proyecto_estructuradatos;
 public class Proyecto_EstructuraDatos {
 
     public static void main(String[] args) {
-       ReservaVuelos vuelos = new ReservaVuelos();
-       vuelos.mostrarMenu();
+        ReservaVuelos vuelos = new ReservaVuelos();
+        vuelos.mostrarMenu();
 
         Cola cola = new Cola();
-        
-        DatoC datoVuelo = new DatoC();
-        datoVuelo.setOrigen("Nueva York");
-        datoVuelo.setDestino("Toronto");
-        datoVuelo.setNumeroVuelo("12-E");
-        datoVuelo.setPrecio(200);
 
-    
+        DatoC datoVuelo = new DatoC();
+        datoVuelo.setOrigen("Toronto");
+        datoVuelo.setDestino("Miami");
+        datoVuelo.setNumeroVuelo("KY951");
+        datoVuelo.setPrecio(250.00);
+
         cola.encolar(datoVuelo);
 
-    
         cola.imprimirCola();
+
     }
-    
 }

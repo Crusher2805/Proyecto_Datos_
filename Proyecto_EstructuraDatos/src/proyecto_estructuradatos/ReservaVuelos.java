@@ -11,7 +11,6 @@ public class ReservaVuelos {
     private NodoP arriba;
     private int maximo;
     private int tamannio;
-    
 
     public ReservaVuelos() {
         this.arriba = null;
@@ -88,15 +87,17 @@ public class ReservaVuelos {
 
     public void mostrarMenu() {
         String opcion = "";
+        Cola cola = new Cola();
 
-        while (!opcion.equals("4")) { 
-            opcion = JOptionPane.showInputDialog(null, 
-                "1. Consultar Vuelos Disponibles\n"
-                + "2. Reservar Vuelo\n"
-                + "3. Mostrar Últimos Vuelos Consultados\n"
-                + "4. Mostrar Reservas Ya Creadas \n"
-                + "5. Salir\n"
-                + "Seleccione una opción\n"
+        while (!opcion.equals("6")) {
+            opcion = JOptionPane.showInputDialog(null,
+                    "1. Consultar Vuelos Disponibles\n"
+                    + "2. Reservar Vuelo\n"
+                    + "3. Mostrar Últimos Vuelos Consultados\n"
+                    + "4. Mostrar Reservas Ya Creadas\n"
+                    + "5. Mostrar lista de pasajeros\n"
+                    + "6. Salir\n"
+                    + "Seleccione una opción\n"
             );
 
             switch (opcion) {
@@ -111,31 +112,41 @@ public class ReservaVuelos {
                     mostrarUltimoVuelo();
                     break;
                 case "4":
-                    Cola cola = new Cola();
-        
                     DatoC datoVuelo = new DatoC();
                     datoVuelo.setOrigen("Nueva York");
                     datoVuelo.setDestino("Toronto");
                     datoVuelo.setNumeroVuelo("12-E");
                     datoVuelo.setPrecio(200);
-      
-    
                     cola.encolar(datoVuelo);
-
-    
                     cola.imprimirCola();
-                        break;
-                        
+                    break;
                 case "5":
-                    int confirm = JOptionPane.showConfirmDialog(null, 
-                        "¿Está seguro que desea salir?\nPerderá sus reservas no confirmadas.", 
-                        "Confirmar Salida", 
-                        JOptionPane.YES_NO_OPTION);
+                    ListaPasajeros listaPasajeros = new ListaPasajeros();
+
+                    listaPasajeros.agregarPasajero(new Pasajero("Keren Cassa", "12345678", "Espanola"));
+                    listaPasajeros.agregarPasajero(new Pasajero("Gerardo Montero", "87654321", "Paraguayo"));
+                    listaPasajeros.agregarPasajero(new Pasajero("Jemi Moreira", "11223344", "Colombiana"));
+                    System.out.println("Lista de pasajeros registrados:");
+                    listaPasajeros.mostrarPasajeros();
+
+                    String documentoBusqueda = "87654321";
+                    Pasajero pasajeroEncontrado = listaPasajeros.buscarPasajero(documentoBusqueda);
+                    if (pasajeroEncontrado != null) {
+                        System.out.println("\nPasajero encontrado:");
+                        System.out.println(pasajeroEncontrado);
+                    } else {
+                        System.out.println("\nNo se encontró un pasajero con el documento: " + documentoBusqueda);
+                    }
+                    break;
+
+                case "6":
+                    int confirm = JOptionPane.showConfirmDialog(null,
+                            "¿Está seguro que desea salir?\nPerderá sus reservas no confirmadas.",
+                            "Confirmar Salida",
+                            JOptionPane.YES_NO_OPTION);
                     if (confirm == JOptionPane.YES_OPTION) {
                         JOptionPane.showMessageDialog(null, "Saliendo del sistema.");
-                        System.exit(0); 
-                    } else {
-                        JOptionPane.showMessageDialog(null, " ");
+                        System.exit(0);
                     }
                     break;
                 default:
