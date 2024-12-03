@@ -89,16 +89,17 @@ public class ReservaVuelos {
         String opcion = "";
         Cola cola = new Cola();
 
-        while (!opcion.equals("6")) {
+        while (!opcion.equals("7")) {
             opcion = JOptionPane.showInputDialog(null,
-                    "1. Consultar Vuelos Disponibles\n"
-                    + "2. Reservar Vuelo\n"
-                    + "3. Mostrar Últimos Vuelos Consultados\n"
-                    + "4. Mostrar Reservas Ya Creadas\n"
-                    + "5. Mostrar lista de pasajeros\n"
-                    + "6. Salir\n"
-                    + "Seleccione una opción\n"
-            );
+            "1. Consultar Vuelos Disponibles\n"
+          + "2. Reservar Vuelo\n"
+          + "3. Mostrar Últimos Vuelos Consultados\n"
+          + "4. Mostrar Reservas Ya Creadas\n"
+          + "5. Mostrar lista de pasajeros\n"
+          + "6. Mostrar lista de vuelos\n"
+          + "7. Salir\n"
+          + "Seleccione una opción\n"
+        );
 
             switch (opcion) {
                 case "1":
@@ -138,8 +139,39 @@ public class ReservaVuelos {
                         System.out.println("\nNo se encontró un pasajero con el documento: " + documentoBusqueda);
                     }
                     break;
-
+                    
                 case "6":
+                ListaCircular lista = new ListaCircular();
+
+                // Agregar vuelos
+                DatoC vuelo1 = new DatoC();
+                vuelo1.setOrigen("Madrid");
+                vuelo1.setDestino("París");
+                vuelo1.setNumeroVuelo("1234");
+                vuelo1.setPrecio(150.0);
+
+                DatoC vuelo2 = new DatoC();
+                vuelo2.setOrigen("Londres");
+                vuelo2.setDestino("Nueva York");
+                vuelo2.setNumeroVuelo("5678");
+                vuelo2.setPrecio(500.0);
+
+                lista.agregarVuelo(vuelo1);
+                lista.agregarVuelo(vuelo2);
+
+                 lista.mostrarVuelos();
+
+
+                DatoC vueloEncontrado = lista.buscarVuelo("1234");
+                
+                if (vueloEncontrado != null) {
+                    System.out.println("Vuelo encontrado: " + vueloEncontrado);
+                }
+
+    break;
+
+
+                case "7":
                     int confirm = JOptionPane.showConfirmDialog(null,
                             "¿Está seguro que desea salir?\nPerderá sus reservas no confirmadas.",
                             "Confirmar Salida",
@@ -155,3 +187,4 @@ public class ReservaVuelos {
         }
     }
 }
+
