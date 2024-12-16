@@ -9,8 +9,11 @@ package proyecto_estructuradatos;
  *
  */
 public class ListaPasajeros {
+    
+    // Estructura lista enlazada simple 
 
     private NodoLS cabeza;
+    
 
     public ListaPasajeros() {
         this.cabeza = null;

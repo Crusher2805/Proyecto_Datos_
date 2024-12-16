@@ -5,9 +5,12 @@
 package proyecto_estructuradatos;
 
 import javax.swing.JOptionPane;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ReservaVuelos {
 
+    //Estructura de pilas
     private NodoP arriba;
     private int maximo;
     private int tamannio;
@@ -91,15 +94,17 @@ public class ReservaVuelos {
 
         while (!opcion.equals("7")) {
             opcion = JOptionPane.showInputDialog(null,
-            "1. Consultar Vuelos Disponibles\n"
-          + "2. Reservar Vuelo\n"
-          + "3. Mostrar Últimos Vuelos Consultados\n"
-          + "4. Mostrar Reservas Ya Creadas\n"
-          + "5. Mostrar lista de pasajeros\n"
-          + "6. Mostrar lista de vuelos\n"
-          + "7. Salir\n"
-          + "Seleccione una opción\n"
-        );
+                    "1. Consultar Vuelos Disponibles\n"
+                    + "2. Reservar Vuelo\n"
+                    + "3. Mostrar Últimos Vuelos Consultados\n"
+                    + "4. Mostrar Reservas Ya Creadas\n"
+                    + "5. Mostrar lista de pasajeros\n"
+                    + "6. Mostrar lista de vuelos\n"
+                    + "7. Agregar vuelos nuevos\n"
+                    + "8. Buscar vuelos por parametros\n"
+                    + "9. Salir\n"
+                    + "Seleccione una opción\n"
+            );
 
             switch (opcion) {
                 case "1":
@@ -139,41 +144,49 @@ public class ReservaVuelos {
                         System.out.println("\nNo se encontró un pasajero con el documento: " + documentoBusqueda);
                     }
                     break;
-                    
+
                 case "6":
-                ListaCircular lista = new ListaCircular();
+                    ListaCircular lista = new ListaCircular();
 
-                // Agregar vuelos
-                DatoC vuelo1 = new DatoC();
-                vuelo1.setOrigen("Madrid");
-                vuelo1.setDestino("París");
-                vuelo1.setNumeroVuelo("1234");
-                vuelo1.setPrecio(150.0);
+                    // Agregar vuelos
+                    DatoC vuelo1 = new DatoC();
+                    vuelo1.setOrigen("Madrid");
+                    vuelo1.setDestino("París");
+                    vuelo1.setNumeroVuelo("1234");
+                    vuelo1.setPrecio(150.0);
 
-                DatoC vuelo2 = new DatoC();
-                vuelo2.setOrigen("Londres");
-                vuelo2.setDestino("Nueva York");
-                vuelo2.setNumeroVuelo("5678");
-                vuelo2.setPrecio(500.0);
+                    DatoC vuelo2 = new DatoC();
+                    vuelo2.setOrigen("Londres");
+                    vuelo2.setDestino("Nueva York");
+                    vuelo2.setNumeroVuelo("5678");
+                    vuelo2.setPrecio(500.0);
 
-                lista.agregarVuelo(vuelo1);
-                lista.agregarVuelo(vuelo2);
+                    lista.agregarVuelo(vuelo1);
+                    lista.agregarVuelo(vuelo2);
 
-                 lista.mostrarVuelos();
+                    lista.mostrarVuelos();
 
+                    DatoC vueloEncontrado = lista.buscarVuelo("1234");
 
-                DatoC vueloEncontrado = lista.buscarVuelo("1234");
-                
-                if (vueloEncontrado != null) {
-                    System.out.println("Vuelo encontrado: " + vueloEncontrado);
-                }
+                    if (vueloEncontrado != null) {
+                        System.out.println("Vuelo encontrado: " + vueloEncontrado);
+                    }
 
-    break;
-
+                    break;
 
                 case "7":
+                    ListaCircular lc = new ListaCircular();
+                    DatoC vuelo = new DatoC();
+                    lc.agregarVuelo(vuelo);
+                    break;
+                case "8":
+                    ListaCircular menu = new ListaCircular();
+                    buscarVuelos(menu);
+                    break;
+
+                case "9":
                     int confirm = JOptionPane.showConfirmDialog(null,
-                            "¿Está seguro que desea salir?\nPerderá sus reservas no confirmadas.",
+                            "Desea salir \nPerder sus reservas no confirmadas.",
                             "Confirmar Salida",
                             JOptionPane.YES_NO_OPTION);
                     if (confirm == JOptionPane.YES_OPTION) {
@@ -182,9 +195,58 @@ public class ReservaVuelos {
                     }
                     break;
                 default:
-                    JOptionPane.showMessageDialog(null, "Opción no válida. Intente de nuevo.");
+                    JOptionPane.showMessageDialog(null, "Opcion no valida. Intente de nuevo.");
             }
         }
     }
-}
 
+    private void buscarVuelos(ListaCircular menu) {
+        String criterio = JOptionPane.showInputDialog(null,
+                "Seleccione el criterio de búsqueda:\n"
+                + "1. Por Origen\n"
+                + "2. Por Destino\n"
+                + "3. Por Número de Vuelo\n"
+                + "Seleccione una opcion"
+        );
+
+        switch (criterio) {
+            case "1":
+                String origen = JOptionPane.showInputDialog("Ingrese el origen del vuelo deseado ");
+                List<DatoC> vuelosPorOrigen = menu.buscarVuelosPorOrigen(origen);
+                if (vuelosPorOrigen.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "No se encontraron vuelos desde " + origen);
+                } else {
+                    StringBuilder sb = new StringBuilder("Vuelos desde " + origen + ":\n");
+                    for (DatoC vuelo : vuelosPorOrigen) {
+                        sb.append(vuelo.toString()).append("\n");
+                    }
+                    JOptionPane.showMessageDialog(null, sb.toString());
+                }
+                break;
+            case "2":
+                String destino = JOptionPane.showInputDialog("Ingrese el destino del vuelo deseado ");
+                List<DatoC> vuelosPorDestino = menu.buscarVuelosPorDestino(destino);
+                if (vuelosPorDestino.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "No se encontraron vuelos hacia " + destino);
+                } else {
+                    StringBuilder sb = new StringBuilder("Vuelos hacia " + destino + ":\n");
+                    for (DatoC vuelo : vuelosPorDestino) {
+                        sb.append(vuelo.toString()).append("\n");
+                    }
+                    JOptionPane.showMessageDialog(null, sb.toString());
+                }
+                break;
+            case "3":
+                String numeroVuelo = JOptionPane.showInputDialog("Ingrese el número de vuelo que desea buscar");
+                DatoC vueloEncontrado = menu.buscarVueloPorNumero(numeroVuelo);
+                if (vueloEncontrado != null) {
+                    JOptionPane.showMessageDialog(null, "Vuelo encontrado:\n" + vueloEncontrado);
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se encontr el vuelo con ese ID " + numeroVuelo);
+                }
+                break;
+            default:
+                JOptionPane.showMessageDialog(null, "Criterio no valido. Ingrese un parametro valido");
+        }
+    }
+}
