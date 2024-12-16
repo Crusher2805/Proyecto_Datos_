@@ -12,17 +12,33 @@ public class ListaCircular {
 
     private NodoC cabeza;
     private NodoC cola;
-    private List<DatoC> vuelos;
-    
 
     public ListaCircular() {
         this.cabeza = null;
         this.cola = null;
-        this.vuelos = new ArrayList<>();
+        inicializarReservas();
+
     }
 
+     
+    private void inicializarReservas() {
+        DatoC reserva1 = new DatoC();
+        reserva1.setOrigen("Londres");
+        reserva1.setDestino("Paris");
+        reserva1.setNumeroVuelo("1234");
+        reserva1.setPrecio(150.0);
+        agregarVuelo(reserva1);
+
+        DatoC reserva2 = new DatoC();
+        reserva2.setOrigen("Peru");
+        reserva2.setDestino("Brasil");
+        reserva2.setNumeroVuelo("5678");
+        reserva2.setPrecio(500.0);
+        agregarVuelo(reserva2);
+    }
+
+
     public void agregarVuelo(DatoC dato) {
-        vuelos.add(dato); 
         NodoC nuevoNodo = new NodoC(dato);
 
         if (cabeza == null) {
@@ -70,59 +86,43 @@ public class ListaCircular {
         return null;
     }
 
-    public List<DatoC> buscarVuelosPorOrigen(String origen) {
-        return buscarVuelosPorOrigenRecursivo(origen, 0);
-    }
-
-    private List<DatoC> buscarVuelosPorOrigenRecursivo(String origen, int index) {
-        List<DatoC> resultados = new ArrayList<>();
-        if (index >= vuelos.size()) {
-            return resultados;
-        }
-        DatoC vueloActual = vuelos.get(index);
-        if (vueloActual.getOrigen().equalsIgnoreCase(origen)) {
-            resultados.add(vueloActual); // Agregar vuelo si coincide con el origen
-        }
-        // Llamada recursiva para el siguiente índice
-        resultados.addAll(buscarVuelosPorOrigenRecursivo(origen, index + 1));
-        return resultados;
-    }
-
-    // Metodo recursivo para buscar vuelos por destino
-    public List<DatoC> buscarVuelosPorDestino(String destino) {
-        return buscarVuelosPorDestinoRecursivo(destino, 0);
-    }
-
-    private List<DatoC> buscarVuelosPorDestinoRecursivo(String destino, int index) {
-        List<DatoC> resultados = new ArrayList<>();
-        if (index >= vuelos.size()) {
-            return resultados;
-        }
-        DatoC vueloActual = vuelos.get(index);
-        if (vueloActual.getDestino().equalsIgnoreCase(destino)) {
-            resultados.add(vueloActual); // Agregar vuelo si coincide con el destino
-        }
-        // Llamada recursiva para el siguiente índice
-        resultados.addAll(buscarVuelosPorDestinoRecursivo(destino, index + 1));
-        return resultados;
-    }
-
-    // Metodo recursivo para buscar un vuelo por numero
-    public DatoC buscarVueloPorNumero(String numeroVuelo) {
-        return buscarVueloPorNumeroRecursivo(numeroVuelo, 0);
-    }
-
-    private DatoC buscarVueloPorNumeroRecursivo(String numeroVuelo, int index) {
-        if (index >= vuelos.size()) {
-            return null;
-        }
-        DatoC vueloActual = vuelos.get(index);
-        if (vueloActual.getNumeroVuelo().equalsIgnoreCase(numeroVuelo)) {
-            return vueloActual; // Retornar el vuelo si coincide
+    public void navegarReservas() {
+        if (cabeza == null) {
+            System.out.println("No hay reservas.");
+            return;
         }
 
-        // Llamada recursiva para el siguiente índice
-        return buscarVueloPorNumeroRecursivo(numeroVuelo, index + 1);
+        NodoC actual = cabeza;
+        String opcion = "";
+
+        while (!opcion.equals("3")) {
+            System.out.println("Reserva actual: " + actual.getDato());
+            opcion = JOptionPane.showInputDialog(null,
+                    "1. Siguiente Reserva\n"
+                    + "2. Reserva Anterior\n"
+                    + "3. Salir\n"
+                    + "Seleccione una opción\n"
+            );
+
+            switch (opcion) {
+                case "1":
+                    actual = actual.getSiguiente(); // Avanza a la siguiente reserva
+                    break;
+                case "2":
+                    // Retroceder a la reserva anterior
+                    NodoC temp = cabeza;
+                    while (temp.getSiguiente() != actual) {
+                        temp = temp.getSiguiente();
+                    }
+                    actual = temp; // Mover al nodo anterior
+                    break;
+                case "3":
+                    JOptionPane.showMessageDialog(null, "Saliendo del sistema.");
+                    break;
+                default:
+                    JOptionPane.showMessageDialog(null, "Opción no válida. Ingrese una opción válida");
+            }
+        }
     }
 
 }
