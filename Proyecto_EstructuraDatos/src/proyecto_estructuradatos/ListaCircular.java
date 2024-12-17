@@ -17,10 +17,8 @@ public class ListaCircular {
         this.cabeza = null;
         this.cola = null;
         inicializarReservas();
-
     }
 
-     
     private void inicializarReservas() {
         DatoC reserva1 = new DatoC();
         reserva1.setOrigen("Londres");
@@ -36,7 +34,6 @@ public class ListaCircular {
         reserva2.setPrecio(500.0);
         agregarVuelo(reserva2);
     }
-
 
     public void agregarVuelo(DatoC dato) {
         NodoC nuevoNodo = new NodoC(dato);
@@ -68,27 +65,9 @@ public class ListaCircular {
         JOptionPane.showMessageDialog(null, sb.toString());
     }
 
-    public DatoC buscarVuelo(String numeroVuelo) {
-        if (cabeza == null) {
-            JOptionPane.showMessageDialog(null, "No hay vuelos registrados.");
-            return null;
-        }
-
-        NodoC actual = cabeza;
-        do {
-            if (actual.getDato().getNumeroVuelo().equals(numeroVuelo)) {
-                return actual.getDato();
-            }
-            actual = actual.getSiguiente();
-        } while (actual != cabeza);
-
-        JOptionPane.showMessageDialog(null, "Vuelo con número " + numeroVuelo + " no encontrado.");
-        return null;
-    }
-
     public void navegarReservas() {
         if (cabeza == null) {
-            System.out.println("No hay reservas.");
+            JOptionPane.showMessageDialog(null, "No hay reservas.");
             return;
         }
 
@@ -96,33 +75,22 @@ public class ListaCircular {
         String opcion = "";
 
         while (!opcion.equals("3")) {
-            System.out.println("Reserva actual: " + actual.getDato());
+            JOptionPane.showMessageDialog(null, "Reserva actual: " + actual.getDato());
             opcion = JOptionPane.showInputDialog(null,
                     "1. Siguiente Reserva\n"
-                    + "2. Reserva Anterior\n"
-                    + "3. Salir\n"
-                    + "Seleccione una opción\n"
-            );
+                    + "2. Salir\n"
+                    + "Seleccione una opción:");
 
             switch (opcion) {
                 case "1":
                     actual = actual.getSiguiente(); // Avanza a la siguiente reserva
                     break;
                 case "2":
-                    // Retroceder a la reserva anterior
-                    NodoC temp = cabeza;
-                    while (temp.getSiguiente() != actual) {
-                        temp = temp.getSiguiente();
-                    }
-                    actual = temp; // Mover al nodo anterior
-                    break;
-                case "3":
-                    JOptionPane.showMessageDialog(null, "Saliendo del sistema.");
-                    break;
+                    JOptionPane.showMessageDialog(null, "Saliendo de la navegación.");
+                    return;
                 default:
-                    JOptionPane.showMessageDialog(null, "Opción no válida. Ingrese una opción válida");
+                    JOptionPane.showMessageDialog(null, "Opción no válida. Intente de nuevo.");
             }
         }
     }
-
 }

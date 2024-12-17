@@ -9,9 +9,9 @@ package proyecto_estructuradatos;
  * @author sebas
  */
 public class NodoDobleCircular {
-    private DatoC dato;
-    private NodoDobleCircular siguiente;
-    private NodoDobleCircular anterior;
+    public DatoC dato;
+    public NodoDobleCircular siguiente;
+    public NodoDobleCircular anterior;
 
     public NodoDobleCircular(DatoC dato) {
         this.dato = dato;

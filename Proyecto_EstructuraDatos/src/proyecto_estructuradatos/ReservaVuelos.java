@@ -7,6 +7,7 @@ package proyecto_estructuradatos;
 import javax.swing.JOptionPane;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDateTime;
 
 public class ReservaVuelos {
 
@@ -99,9 +100,9 @@ public class ReservaVuelos {
                     + "3. Mostrar Últimos Vuelos Consultados\n"
                     + "4. Mostrar Reservas Ya Creadas\n"
                     + "5. Mostrar lista de pasajeros\n"
-                    + "6. Mostrar lista de vuelos\n"
+                    + "6. Eliminar Vuelos\n"
                     + "7. Navegar Reservas\n"
-                    + "8. \n"
+                    + "8. Organizar los vuelos por fecha y hora de salida\n"
                     + "9. Salir\n"
                     + "Seleccione una opción\n"
             );
@@ -147,13 +148,47 @@ public class ReservaVuelos {
 
                 case "6":
                     ListaDobleCircular lista = new ListaDobleCircular();
-                    lista.mostrarMenu();
+                    String criterio = JOptionPane.showInputDialog("Ingrese el número de vuelo, origen o destino para eliminar:");
+                    lista.buscarEliminarReserva(criterio);
 
                     break;
 
                 case "7":
                     ListaCircular listaC = new ListaCircular();
                     listaC.navegarReservas();
+
+                case "8":
+                    ArbolB arbolVuelos = new ArbolB();
+
+                    // Crear vuelos y agregarlos al árbol
+                    DatoC vuelo1 = new DatoC();
+                    vuelo1.setOrigen("Londres");
+                    vuelo1.setDestino("Paris");
+                    vuelo1.setNumeroVuelo("1234");
+                    vuelo1.setPrecio(150.0);
+                    vuelo1.setFechaHoraSalida(LocalDateTime.of(2023, 12, 25, 10, 30));
+                    arbolVuelos.insertarVuelo(vuelo1);
+
+                    DatoC vuelo2 = new DatoC();
+                    vuelo2.setOrigen("Peru");
+                    vuelo2.setDestino("Brasil");
+                    vuelo2.setNumeroVuelo("5678");
+                    vuelo2.setPrecio(500.0);
+                    vuelo2.setFechaHoraSalida(LocalDateTime.of(2023, 12, 24, 18, 0));
+                    arbolVuelos.insertarVuelo(vuelo2);
+
+                    DatoC vuelo3 = new DatoC();
+                    vuelo3.setOrigen("Madrid");
+                    vuelo3.setDestino("Nueva York");
+                    vuelo3.setNumeroVuelo("9101");
+                    vuelo3.setPrecio(300.0);
+                    vuelo3.setFechaHoraSalida(LocalDateTime.of(2023, 12, 26, 7, 45));
+                    arbolVuelos.insertarVuelo(vuelo3);
+
+                    // Mostrar vuelos ordenados por fecha y hora de salida
+                    System.out.println("Vuelos ordenados por fecha y hora de salida:");
+                    arbolVuelos.mostrarVuelosOrdenados();
+                    break;
 
                 case "9":
                     int confirm = JOptionPane.showConfirmDialog(null,
@@ -170,4 +205,5 @@ public class ReservaVuelos {
             }
         }
     }
+
 }

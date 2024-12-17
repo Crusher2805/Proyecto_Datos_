@@ -4,57 +4,58 @@
  */
 package proyecto_estructuradatos;
 
-/**
- *
- * @author sebas
- */
+import java.time.LocalDateTime;
+
 public class DatoC {
-
-    private String Origen;
-    private String Destino;
-    private String NumeroVuelo;
-    private double Precio;
-
+    private String origen;
+    private String destino;
+    private String numeroVuelo;
+    private double precio;
+    private LocalDateTime fechaHoraSalida;
 
     public String getOrigen() {
-        return Origen;
+        return origen;
     }
 
-    public void setOrigen(String Origen) {
-        this.Origen = Origen;
+    public void setOrigen(String origen) {
+        this.origen = origen;
     }
 
     public String getDestino() {
-        return Destino;
+        return destino;
     }
 
-    public void setDestino(String Destino) {
-        this.Destino = Destino;
+    public void setDestino(String destino) {
+        this.destino = destino;
     }
 
     public String getNumeroVuelo() {
-        return NumeroVuelo;
+        return numeroVuelo;
     }
 
-    public void setNumeroVuelo(String NumeroVuelo) {
-        this.NumeroVuelo = NumeroVuelo;
+    public void setNumeroVuelo(String numeroVuelo) {
+        this.numeroVuelo = numeroVuelo;
     }
 
     public double getPrecio() {
-        return Precio;
+        return precio;
     }
 
-    public void setPrecio(double Precio) {
-        this.Precio = Precio;
+    public void setPrecio(double precio) {
+        this.precio = precio;
+    }
+
+    public LocalDateTime getFechaHoraSalida() {
+        return fechaHoraSalida;
+    }
+
+    public void setFechaHoraSalida(LocalDateTime fechaHoraSalida) {
+        this.fechaHoraSalida = fechaHoraSalida;
     }
 
     @Override
     public String toString() {
-        return "Vuelo{" +
-                "origen='" + Origen + '\'' +
-                ", destino='" + Destino + '\'' +
-                ", numeroVuelo='" + NumeroVuelo + '\'' +
-                ", precio=" + Precio +
-                '}';
+        return "Vuelo: " + numeroVuelo + ", Origen: " + origen + ", Destino: " + destino + 
+               ", Fecha/Hora: " + fechaHoraSalida + ", Precio: $" + precio;
     }
 }
