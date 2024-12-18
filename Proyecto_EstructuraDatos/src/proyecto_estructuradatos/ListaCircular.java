@@ -73,17 +73,24 @@ public class ListaCircular {
 
         NodoC actual = cabeza;
         String opcion = "";
+        
+        DatoC reserva2 = new DatoC();
+        reserva2.setOrigen("Londres");
+        reserva2.setDestino("Paris");
+        reserva2.setNumeroVuelo("1234");
+        reserva2.setPrecio(150.0);
 
-        while (!opcion.equals("3")) {
-            JOptionPane.showMessageDialog(null, "Reserva actual: " + actual.getDato());
+
+        while (!opcion.equals("2")) {
+            JOptionPane.showMessageDialog(null, "Reserva actual: " + reserva2);
             opcion = JOptionPane.showInputDialog(null,
-                    "1. Siguiente Reserva\n"
+                    "1. Mostrar Reserva\n"
                     + "2. Salir\n"
                     + "Seleccione una opción:");
 
             switch (opcion) {
                 case "1":
-                    actual = actual.getSiguiente(); // Avanza a la siguiente reserva
+                    actual = actual.getSiguiente(); // Avanza a la siguiente reservaa2
                     break;
                 case "2":
                     JOptionPane.showMessageDialog(null, "Saliendo de la navegación.");
