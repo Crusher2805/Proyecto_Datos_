@@ -5,24 +5,28 @@
 package proyecto_estructuradatos;
 
 import javax.swing.JOptionPane;
-import java.util.ArrayList;
-import java.util.List;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 public class ReservaVuelos {
-
-    //Estructura de pilas
+    // Estructura de pilas
     private NodoP arriba;
     private int maximo;
     private int tamannio;
+
+    // Sistema de reservas aéreas
+    private SistemaReservasAereas sistema;
 
     public ReservaVuelos() {
         this.arriba = null;
         this.maximo = 5;
         this.tamannio = 0;
+        // Inicialización de los aeropuertos
+        this.sistema = new SistemaReservasAereas();
         mostrarMenu();
     }
 
+    // Funciones de la pila
     public void apilar(String numeroVuelo, String origen, String destino, double precio) {
         NodoP nuevoNodo = new NodoP(numeroVuelo, origen, destino, precio);
         if (tamannio >= maximo) {
@@ -43,7 +47,7 @@ public class ReservaVuelos {
     public void mostrarUltimoVuelo() {
         NodoP actual = arriba;
         if (actual == null) {
-            JOptionPane.showMessageDialog(null, "No existen vuelos consultados ");
+            JOptionPane.showMessageDialog(null, "No existen vuelos consultados.");
         }
         while (actual != null) {
             JOptionPane.showMessageDialog(null, actual.toString());
@@ -52,40 +56,62 @@ public class ReservaVuelos {
     }
 
     public void consultarVuelos() {
-        JOptionPane.showMessageDialog(null,
-                "1. HD123, Shangai, Moscu, $300.00\n"
-                + "2. FK456, Londres, Madrid, $150.00\n"
-                + "3. UW852, Pekín, Tokio, $400.00\n"
-                + "4. KA753, Sídney, Melbourne, $200.00\n"
-                + "5. KY951, Toronto, Miami, $250.00\n"
-        );
+        sistema.mostrarAeropuertos();
     }
 
-    public void reservarVuelo(String numeroVuelo) {
-        switch (numeroVuelo) {
-            case "HD123":
-                apilar("HD123", "Shangai", "Moscu", 300.00);
-                JOptionPane.showMessageDialog(null, "Reserva realizada para: HD123, Shangai, Moscu, 300.00");
-                break;
-            case "FK456":
-                apilar("FK456", "Londres", "Madrid", 150.00);
-                JOptionPane.showMessageDialog(null, "Reserva realizada para: FK456, Londres, Madrid, 150.00");
-                break;
-            case "UW852":
-                apilar("UW852", "Pekín", "Tokio", 400.00);
-                JOptionPane.showMessageDialog(null, "Reserva realizada para: UW852, Pekín, Tokio, 400.00");
-                break;
-            case "KA753":
-                apilar("KA753", "Sídney", "Melbourne", 200.00);
-                JOptionPane.showMessageDialog(null, "Reserva realizada para: KA753, Sídney, Melbourne, 200.00");
-                break;
-            case "KY951":
-                apilar("KY951", "Toronto", "Miami", 250.00);
-                JOptionPane.showMessageDialog(null, "Reserva realizada para: KY951, Toronto, Miami, 250.00");
-                break;
-            default:
-                JOptionPane.showMessageDialog(null, "Vuelo no encontrado ");
-                break;
+    // Funciones del sistema de reservas aéreas
+    public void agregarVuelo() {
+        try {
+            String origen = JOptionPane.showInputDialog("Ingrese el número de aeropuerto de origen (0 a " + (sistema.getAeropuertos().size() - 1) + ")");
+            String destino = JOptionPane.showInputDialog("Ingrese el número de aeropuerto de destino (0 a " + (sistema.getAeropuertos().size() - 1) + ")");
+            String precioStr = JOptionPane.showInputDialog("Ingrese el precio del vuelo");
+            String tiempoStr = JOptionPane.showInputDialog("Ingrese el tiempo del vuelo");
+
+            int origenIdx = Integer.parseInt(origen);
+            int destinoIdx = Integer.parseInt(destino);
+            int precio = Integer.parseInt(precioStr); 
+            int tiempo = Integer.parseInt(tiempoStr); 
+
+            if (origenIdx < 0 || origenIdx >= sistema.getAeropuertos().size() || destinoIdx < 0 || destinoIdx >= sistema.getAeropuertos().size()) {
+                JOptionPane.showMessageDialog(null, "Índices fuera de rango. Intente de nuevo.");
+                return;
+            }
+
+            sistema.agregarVueloPrecio(origenIdx, destinoIdx, precio);  // Agregar vuelo con precio
+            sistema.agregarVueloTiempo(origenIdx, destinoIdx, tiempo); // Agregar vuelo con tiempo
+            JOptionPane.showMessageDialog(null, "Vuelo agregado exitosamente: Precio " + sistema.obtenerPrecio(origenIdx, destinoIdx));
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Por favor, ingrese solo números válidos.");
+        }
+    }
+
+    public void reservarVuelo(String numeroVuelo, String origen, String destino) {
+        try {
+            int origenIdx = Integer.parseInt(origen);
+            int destinoIdx = Integer.parseInt(destino);
+            int precio = sistema.obtenerPrecio(origenIdx, destinoIdx);
+
+            apilar(numeroVuelo, origen, destino, precio);
+            JOptionPane.showMessageDialog(null, "Vuelo " + numeroVuelo + " reservado de " + sistema.getAeropuertos().get(origenIdx) + " a " + sistema.getAeropuertos().get(destinoIdx));
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Por favor, ingrese solo números válidos para los índices.");
+        }
+    }
+
+    public void mostrarMatriz() {
+        String tipo = JOptionPane.showInputDialog(null, "¿Desea ver la matriz de Precios o de Tiempos?");
+        if (tipo.equalsIgnoreCase("Precios")) {
+            sistema.mostrarMatriz("Precios");
+        } else if (tipo.equalsIgnoreCase("Tiempos")) {
+            sistema.mostrarMatriz("Tiempos");
+        } else {
+            JOptionPane.showMessageDialog(null, "Opción no válida.");
+        }
+    }
+    
+    private void ordenarMatriz(int[][] matriz) {
+        for (int i = 0; i < matriz.length; i++) {
+            Arrays.sort(matriz[i]);  // Ordenar cada fila de manera ascendente
         }
     }
 
@@ -93,7 +119,7 @@ public class ReservaVuelos {
         String opcion = "";
         Cola cola = new Cola();
 
-        while (!opcion.equals("7")) {
+        while (!opcion.equals("12")) {
             opcion = JOptionPane.showInputDialog(null,
                     "1. Consultar Vuelos Disponibles\n"
                     + "2. Reservar Vuelo\n"
@@ -103,7 +129,10 @@ public class ReservaVuelos {
                     + "6. Eliminar Vuelos\n"
                     + "7. Navegar Reservas\n"
                     + "8. Organizar los vuelos por fecha y hora de salida\n"
-                    + "9. Salir\n"
+                    + "9. Agregar vuelo\n"
+                    + "10. Mostrar Matriz de Vuelos\n"
+                    + "11. Ver Matriz de Precios o Tiempos\n"
+                    + "12. Salir\n"
                     + "Seleccione una opción\n"
             );
 
@@ -113,7 +142,9 @@ public class ReservaVuelos {
                     break;
                 case "2":
                     String numeroVuelo = JOptionPane.showInputDialog("Ingrese el número de vuelo a reservar ");
-                    reservarVuelo(numeroVuelo);
+                    String origen = JOptionPane.showInputDialog("Ingrese el origen del vuelo ");
+                    String destino = JOptionPane.showInputDialog("Ingrese el destino del vuelo ");
+                    reservarVuelo(numeroVuelo, origen, destino);
                     break;
                 case "3":
                     mostrarUltimoVuelo();
@@ -129,7 +160,6 @@ public class ReservaVuelos {
                     break;
                 case "5":
                     ListaPasajeros listaPasajeros = new ListaPasajeros();
-
                     listaPasajeros.agregarPasajero(new Pasajero("Keren Cassa", "12345678", "Espanola"));
                     listaPasajeros.agregarPasajero(new Pasajero("Gerardo Montero", "87654321", "Paraguayo"));
                     listaPasajeros.agregarPasajero(new Pasajero("Jemi Moreira", "11223344", "Colombiana"));
@@ -150,12 +180,12 @@ public class ReservaVuelos {
                     ListaDobleCircular lista = new ListaDobleCircular();
                     String criterio = JOptionPane.showInputDialog("Ingrese el número de vuelo, origen o destino para eliminar:");
                     lista.buscarEliminarReserva(criterio);
-
                     break;
 
                 case "7":
                     ListaCircular listaC = new ListaCircular();
                     listaC.navegarReservas();
+                    break;
 
                 case "8":
                     ArbolB arbolVuelos = new ArbolB();
@@ -190,7 +220,7 @@ public class ReservaVuelos {
                     arbolVuelos.mostrarVuelosOrdenados();
                     break;
 
-                case "9":
+                case "12":
                     int confirm = JOptionPane.showConfirmDialog(null,
                             "Desea salir \nPerder sus reservas no confirmadas.",
                             "Confirmar Salida",
@@ -200,10 +230,23 @@ public class ReservaVuelos {
                         System.exit(0);
                     }
                     break;
+
+                case "9":
+                    agregarVuelo();
+                    break;
+
+                case "10":
+                    mostrarMatriz();
+                    break;
+
+                case "11":
+                    // Ver la matriz de precios o tiempos
+                    mostrarMatriz();
+                    break;
+
                 default:
-                    JOptionPane.showMessageDialog(null, "Opcion no valida. Intente de nuevo.");
+                    JOptionPane.showMessageDialog(null, "Opción no válida. Intente de nuevo.");
             }
         }
     }
-
 }
