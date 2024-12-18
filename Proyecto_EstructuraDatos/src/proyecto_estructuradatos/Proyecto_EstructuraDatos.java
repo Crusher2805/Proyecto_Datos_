@@ -5,22 +5,7 @@
 package proyecto_estructuradatos;
 
 public class Proyecto_EstructuraDatos {
-
     public static void main(String[] args) {
-        ReservaVuelos vuelos = new ReservaVuelos();
-        vuelos.mostrarMenu();
-
-        Cola cola = new Cola();
-
-        DatoC datoVuelo = new DatoC();
-        datoVuelo.setOrigen("Toronto");
-        datoVuelo.setDestino("Miami");
-        datoVuelo.setNumeroVuelo("KY951");
-        datoVuelo.setPrecio(250.00);
-
-        cola.encolar(datoVuelo);
-
-        cola.imprimirCola();
-
+    new ReservaVuelos();
     }
 }
